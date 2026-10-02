@@ -151,8 +151,12 @@ The default theme is driven by CSS custom properties. The owner-facing way is **
 (`?theme=acme` edits the settings of a theme that is not active yet): logo, logo height, brand / accent / text /
 background / panel colours, body and heading fonts, corner style, header style.
 
+Precedence (lowest → highest): the default theme's `app.css` defaults → Admin › Settings › Theme values → your child
+theme's `theme.css`. (Admin theme settings reach the storefront from pine/commerce **1.3.2**; on 1.3.0–1.3.1 set the
+values in `theme.css` instead.)
+
 For values that belong to the brand and should live in Git, put them in `themes/acme/assets/css/theme.css`. It is
-loaded automatically **after** the default stylesheet:
+loaded automatically **after** the default stylesheet and the admin settings, so it wins:
 
 ```css
 /* themes/acme/assets/css/theme.css */
