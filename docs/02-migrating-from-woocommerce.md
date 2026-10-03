@@ -9,6 +9,7 @@ config key is in [IMPORTER.md](https://github.com/SetWebUK/ecom-core/blob/main/d
 
 **Contents**
 
+- [Two ways to import: database or REST API](#two-ways-to-import-database-or-rest-api)
 - [How the importer works](#how-the-importer-works)
 - [The onboarding flow at a glance](#the-onboarding-flow-at-a-glance)
 - [1. Collect before you start](#1-collect-before-you-start)
@@ -25,6 +26,42 @@ config key is in [IMPORTER.md](https://github.com/SetWebUK/ecom-core/blob/main/d
 - [Troubleshooting](#troubleshooting)
 
 ---
+
+## Two ways to import: database or REST API
+
+| | **Database importer** (`commerce:import-wordpress`) | **WooCommerce REST API** (Admin › Import, since 1.5.0) |
+|---|---|---|
+| Needs | Read access to the WordPress database (same server, or remote DB credentials) | Only the shop URL + a **read-only** WooCommerce API key |
+| Best for | Full migrations you control end to end | Shops on hosting you can't get database access to; quick catalogue pulls; re-syncs |
+| Customer passwords | ✅ kept – customers sign in as before | ❌ not exposed by the API – customers use "Forgot password" (the sign-in page prompts them) |
+| Menus, redirects, plugin data, client adapters | ✅ | ❌ (not in the API) |
+| Speed | Fast | Slower (paged HTTP requests, one per image) |
+
+Both write the same tables, keep the old URLs, and can be re-run safely.
+
+### Importing via the API
+
+1. On the **old** shop: WooCommerce › Settings › Advanced › REST API › **Add key**, permission **Read**. Copy the
+   consumer key and secret.
+2. On the **new** shop: **Admin › Import** → enter the shop URL, key and secret → **Save & test connection**
+   (shows the store name, versions, item counts and any permission problems). Secrets are stored encrypted.
+3. Tick what to import – categories, attributes, products and variations, customers, coupons, orders (with refunds,
+   notes and tax lines), reviews, shipping/tax, pages/posts, media – and run a **Dry run** first.
+4. **Start import**. It runs in the background with live progress; you can leave the page, cancel, or resume.
+5. Before go-live, re-sync with **Only items changed since**. Revoke the API key on the old shop when you're done.
+
+No key at all? **Public catalogue only** mode reads the WooCommerce Store API (published, visible products,
+categories, pages, posts and images – no orders or customers).
+
+From the command line:
+
+```bash
+php artisan commerce:import-woo-api --url=https://old-shop.example.test --key=ck_… --secret=cs_… --dry-run
+```
+
+Details, options and troubleshooting:
+[IMPORTER.md §12](https://github.com/SetWebUK/ecom-core/blob/main/docs/IMPORTER.md#12-importing-via-the-woocommerce-rest-api).
+The rest of this guide covers the database importer.
 
 ## How the importer works
 

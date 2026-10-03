@@ -31,7 +31,7 @@ and how to add your own features. The code lives in two other repositories (see 
 
 | You are… | Pine Commerce gives you… |
 |---|---|
-| **An agency moving WooCommerce clients off WordPress** | A one-way, repeatable importer (products, variations, customers with their old passwords, orders, coupons, pages, posts, menus, redirects, SEO, media) that keeps every old URL working, and a theme system that can rebuild the old site pixel for pixel. |
+| **An agency moving WooCommerce clients off WordPress** | A one-way, repeatable importer – from the WordPress database or, with just an API key, the WooCommerce REST API – (products, variations, customers with their old passwords, orders, coupons, pages, posts, menus, redirects, SEO, media) that keeps every old URL working, and a theme system that can rebuild the old site pixel for pixel. |
 | **A developer starting a new shop on Laravel** | A finished storefront and back office you can brand in an afternoon, with a clean extension API for anything bespoke. No admin framework to learn, no Node build. |
 | **A shop owner** | A fast, straightforward back office: orders, products, customers, discounts, content, reports and one-click updates you approve yourself. |
 
